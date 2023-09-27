@@ -1,7 +1,7 @@
 import { Configuration, OpenAIApi } from "openai";
 
 const openAIConfig = new Configuration({
-  apiKey: process.env.OPENAI_KEY
+  apiKey: process.env.OPENAI_API_KEY
 });
 
 const openapi = new OpenAIApi(openAIConfig);
@@ -14,7 +14,7 @@ export const chatCompletion = async (req, res) => {
       model: "text-davinci-003",
       prompt: prompt,
       temperature: 0,
-      max_tokens: 3000
+      max_tokens: 75
     });
 
     const text = answer.data.choices[0].text;

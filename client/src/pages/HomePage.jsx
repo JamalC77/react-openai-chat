@@ -6,11 +6,19 @@ import { toast } from "react-toastify";
 import TypeWriter from "typewriter-effect";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { Stack, Box, Typography, IconButton, FormControl, OutlinedInput, CircularProgress } from "@mui/material";
+import {
+  Stack,
+  Box,
+  Typography,
+  IconButton,
+  FormControl,
+  OutlinedInput,
+  CircularProgress,
+} from "@mui/material";
 
 const messageType = {
   answer: "answer",
-  question: "question"
+  question: "question",
 };
 
 const HomePage = () => {
@@ -27,10 +35,13 @@ const HomePage = () => {
   const getAnswer = async () => {
     if (onRequest) return;
 
-    const newMessages = [...messages, {
-      type: messageType.question,
-      content: question
-    }];
+    const newMessages = [
+      ...messages,
+      {
+        type: messageType.question,
+        content: question,
+      },
+    ];
 
     setMessages(newMessages);
     setQuestion("");
@@ -39,10 +50,13 @@ const HomePage = () => {
     const { response, err } = await chatCompletion({ prompt: question });
 
     if (response) {
-      setMessages([...newMessages, {
-        type: messageType.answer,
-        content: response.text
-      }]);
+      setMessages([
+        ...newMessages,
+        {
+          type: messageType.answer,
+          content: response.text,
+        },
+      ]);
     }
 
     if (err) {
@@ -62,10 +76,10 @@ const HomePage = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      chatWrapperRef.current.addEventListener("DOMNodeInserted", e => {
+      chatWrapperRef.current.addEventListener("DOMNodeInserted", (e) => {
         e.currentTarget.scroll({
           top: e.currentTarget.scrollHeight,
-          behavior: "smooth"
+          behavior: "smooth",
         });
       });
     }, 200);
@@ -78,13 +92,15 @@ const HomePage = () => {
       sx={{ height: "100%" }}
     >
       <Header bg borderBottom>
-        <Box sx={{
-          width: "100%",
-          height: "100%",
-          position: "relative",
-          paddingX: 2,
-          maxWidth: "md"
-        }}>
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            position: "relative",
+            paddingX: 2,
+            maxWidth: "md",
+          }}
+        >
           <Typography
             variant="h6"
             fontWeight="700"
@@ -92,7 +108,7 @@ const HomePage = () => {
               position: "absolute",
               top: "50%",
               left: "50%",
-              transform: "translate(-50%, -50%)"
+              transform: "translate(-50%, -50%)",
             }}
           >
             {username}
@@ -103,7 +119,7 @@ const HomePage = () => {
               position: "absolute",
               top: "50%",
               right: "16px",
-              transform: "translateY(-50%)"
+              transform: "translateY(-50%)",
             }}
           >
             <LogoutOutlinedIcon />
@@ -111,49 +127,60 @@ const HomePage = () => {
         </Box>
       </Header>
 
-      <Box ref={chatWrapperRef} sx={{
-        height: "100%",
-        position: "fixed",
-        zIndex: 1,
-        maxWidth: "md",
-        width: "100%",
-        overflowY: "auto",
-        paddingTop: "60px",
-        paddingBottom: "90px",
-        "&::-webkit-scrollbar": {
-          width: "0px"
-        }
-      }}>
-        <Box sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-end",
+      <Box
+        ref={chatWrapperRef}
+        sx={{
+          height: "100%",
+          position: "fixed",
+          zIndex: 1,
           maxWidth: "md",
-          width: "100%"
-        }}>
+          width: "100%",
+          overflowY: "auto",
+          paddingTop: "60px",
+          paddingBottom: "90px",
+          "&::-webkit-scrollbar": {
+            width: "0px",
+          },
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            maxWidth: "md",
+            width: "100%",
+          }}
+        >
           {messages.map((item, index) => (
             <Box key={index} padding={1}>
-              <Box sx={{
-                padding: 2,
-                bgcolor: item.type === messageType.answer && "#2f2f2f",
-                borderRadius: 3
-              }}>
+              <Box
+                sx={{
+                  padding: 2,
+                  bgcolor: item.type === messageType.answer && "#2f2f2f",
+                  borderRadius: 3,
+                }}
+              >
                 {index === messages.length - 1 ? (
                   item.type === messageType.answer ? (
-                    <TypeWriter onInit={(writer) => {
-                      writer.typeString(item.content)
-                        .callFunction(() => {
-                          document.querySelector(".Typewriter__cursor").style.display = "none";
+                    <TypeWriter
+                      onInit={(writer) => {
+                        writer
+                          .typeString(item.content)
+                          .callFunction(() => {
+                            document.querySelector(
+                              ".Typewriter__cursor"
+                            ).style.display = "none";
 
-                          setOnRequest(false);
-                          setTimeout(() => {
-                            inputRef.current.focus();
-                          }, 200);
-                        })
-                        .changeDelay(50)
-                        .start();
-                    }} />
-                  ) : item.content
+                            setOnRequest(false);
+                          })
+                          .changeDelay(5)
+                          .start();
+                      }}
+                    />
+                  ) : (
+                    item.content
+                  )
                 ) : (
                   item.content
                 )}
@@ -171,18 +198,14 @@ const HomePage = () => {
         bgcolor="#000"
         zIndex={3}
       >
-        <Box
-          padding={2}
-          width="100%"
-          maxWidth="md"
-        >
+        <Box padding={2} width="100%" maxWidth="md">
           <FormControl fullWidth variant="outlined">
             <OutlinedInput
               inputRef={inputRef}
               sx={{
                 "& .MuiOutlinedInput-notchedOutline": {
-                  border: "none"
-                }
+                  border: "none",
+                },
               }}
               endAdornment={
                 onRequest ? (
